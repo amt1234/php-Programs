@@ -4,5 +4,5 @@ include 'Utility.php';
 echo "Enter the number : ";
 $number = Utility::numericInput();
 $result = Utility::primeNumberFunction($number);
-Utility::primeAnagramAndPalindrom($result);
+Utility::primeAndAnagram($result);
 ?>

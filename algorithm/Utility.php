@@ -1,7 +1,6 @@
 <?php
 class Utility
 {
-
     //UserInput methods
     public static function numericInput()
     {
@@ -22,16 +21,18 @@ class Utility
     {
         try {
             fscanf(STDIN, "%s\n", $string);
-            if (is_string($string)) {
-                return $string;
-            } else {
+            if (is_numeric($string)) {
                 throw new Exception("Enter string only");
+               
+            } else {
+                return $string;
             }
 
         } catch (Exception $e) {
             echo "Exception :" . $e->getMessage() . "\n" . "on line" . $e->getLine() . "\n";
         }
     }
+    
 
     public static function floatInput()
     {
@@ -47,7 +48,20 @@ class Utility
             echo "Exception :" . $e->getMessage() . "\n" . "on line" . $e->getLine() . "\n";
         }
     }
+    public static function stringnumbericInput()
+    {
+        try {
+            fscanf(STDIN, "%s\n", $string);
+            if (is_string($string)) {  
+                return $string;
+            } else {
+                throw new Exception("Enter string only");
+            }
 
+        } catch (Exception $e) {
+            echo "Exception :" . $e->getMessage() . "\n" . "on line" . $e->getLine() . "\n";
+        }
+    }
     //1.Anagram function
     public function anagram($string1, $string2)
     {
@@ -75,6 +89,7 @@ class Utility
     $string1array = str_split($string1);
     $string2array = str_split($string2);
     //1 way
+    //Compare the values of two arrays, and return the matches:
     /*$matches = array_intersect($string1array, $string2array);
     print_r($matches);
     if (count($matches) == count($string1array)) {
@@ -102,6 +117,7 @@ class Utility
         return true;
     }
 
+    //2.Take a range of 0 - 1000 Numbers and find the Prime numbers in that range.
     public static function primeNumberFunction($number)
     {
         $primeArray = array();
@@ -114,10 +130,9 @@ class Utility
         return $primeArray;
     }
 
-    public static function primeAnagramAndPalindrom($primeArray)
+    //3.1 find the prime numbers that are Anagram
+    public static function primeAndAnagram($primeArray)
     {
-        $result1 = array();
-        $result2 = array();
         for ($i = 0; $i < count($primeArray); $i++) {
             for ($j = ($i + 1); $j < count($primeArray); $j++) {
                 Utility::angramForPrime($primeArray[$i], $primeArray[$j]);
@@ -134,33 +149,46 @@ class Utility
         }
     }
 
+    //3.2 find the prime numbers that are palindrom
     public static function palindrome($primeArray)
     {
         for ($i = 0; $i < count($primeArray); $i++) {
+            $number = $primeArray[$i];
+            $temp = $number;
+            $sum = 0;
             for ($j = ($i + 1); $j < count($primeArray); $j++) {
-                $number = $primeArray[$i];
-                $temp = $number;
-                $sum = 0;
+
                 while ($number > 0) {
                     $number2 = $number % 10;
                     $number = floor($number / 10);
                     $sum = $sum * 10 + $number2;
                 }
-                if ($sum == $primeArray[$j]) {
-                    echo "\n number is palindrome : $temp and $primeArray[$j]";
-                }
+            }
+            if ($temp == $sum) {
+                echo "\nnumber is palindrom : $temp and $sum";
             }
         }
     }
-    public static function tempratureConversion($celsius)
-    {
-        $fahrenheit = ($celsius * (9 / 5)) + 32;
-        echo "\n Temprature conversion from Celsius to Fahrenheit : $fahrenheit";
 
-        $celsius = (($fahrenheit - 32) * (5 / 9));
-        echo "\n Temprature conversion from Fahrenheit to Celsius : $celsius";
+    //10.Find the Fewest Notes to be returned for Vending Machine
+    public static function vending($amount, $index)
+    {
+        $vendingarray = array(1000, 500, 200, 100, 50, 20, 10, 5, 1);
+        static $reminder = 0;
+        if ($amount > 0) {
+            if ($amount >= $vendingarray[$index]) 
+            {
+                $reminder = $amount % $vendingarray[$index];
+                $count = floor($amount / $vendingarray[$index]);
+
+                echo "\n amount is $amount withdrawn $vendingarray[$index] and count is $count ";
+            }
+            $index++;
+            Utility::vending($reminder, $index);
+        }
     }
 
+    //11.dayOfWeek
     public static function dayOfWeek($day, $month, $year)
     {
         $year0 = floor(($year - (14 - $month)) / 12);
@@ -196,6 +224,17 @@ class Utility
         }
     }
 
+    //12.temperaturConversion
+    public static function tempratureConversion($celsius)
+    {
+        $fahrenheit = ($celsius * (9 / 5)) + 32;
+        echo "\n Temprature conversion from Celsius to Fahrenheit : $fahrenheit";
+
+        $celsius = (($fahrenheit - 32) * (5 / 9));
+        echo "\n Temprature conversion from Fahrenheit to Celsius : $celsius";
+    }
+
+    //13.monthlyPayment
     public static function monthlyPayment($principal, $rate, $year)
     {
         $r = $rate / (12 * 100);
@@ -204,6 +243,7 @@ class Utility
         echo "total : $total";
     }
 
+    //14.sqrt
     public static function squareRoot($number)
     {
         $epsilon = 1e-15;
@@ -215,6 +255,7 @@ class Utility
         echo $newnumber;
     }
 
+    //15.toBinary
     public static function decimalToBinary($number)
     {
         //  decbin() function converts a decimal number to a binary number
@@ -228,30 +269,97 @@ class Utility
         }
     }
 
-    public static function nibbleSwap($result)
+    public static function decimal($number)
     {
-        $length=strlen($result);
-        echo "length".$length;
-        // $nibble=array();
-        $temp = 0;
-       echo chunk_split($result,4,".");
-        // echo "length".$len;
-       // print_r(str_split($result,4));
-       // array_push($nibble, (str_split($result, 4)));
-        echo "array size :" . count($result)."\n";
-      // print_r($result);
-         for($i=0;$i<count($result);$i++)
-         {
-             for($j=($i+1);$j<count($result);$j++)
-             {
-                
-                $temp=$result[$i];
-                $result[$i]=$result[$j];
-                $result[$j]=$temp;
-             }
-             echo "\nafter nibble swapping : ".$result[$i]." ".$temp;
-         }
+        static $sum = 0;
+        $arrayelement = array();
+        while ($number > 0) {
+            $reminder = (int) $number % 2;
+            $number = (int) $number / 2;
+            array_push($arrayelement, $reminder);
+        }
 
+        $newarray = array();
+        for ($i = count($arrayelement) - 1; $i >= 0; $i--) {
+            array_push($newarray, $arrayelement[$i]);
+        }
+        echo "\nafter shifting :";
+        print_r($newarray);
+        $string = "";
+        for ($i = 0; $i < count($newarray); $i++) {
+            $string = $string . $newarray[$i];
+        }
+        echo "after conversion of array to string : $string";
+        return Utility::checkStringLength($string);
+    }
+    //cheking string length for left padding
+    public static function checkStringLength($string)
+    {
+        if ((strlen($string) == 8) || (strlen($string) == 16)) {
+            return $string;
+        } else {
+            $string = "0" . $string;
+            return Utility::checkStringLength($string);
+        }
     }
 
+    //16.Swap nibbles
+    public static function nibbleSwap($result)
+    {
+        $temp = 0;
+        $nibble = str_split($result, 4);
+        echo "array size :" . count($nibble) . "\n";
+        $newlen = count($nibble);
+        print_r($nibble);
+        for ($i = 0; $i < $newlen - 1; $i++) {
+            for ($j = ($i + 1); $j < $newlen; $j++) {
+                $temp = $nibble[$i];
+                $nibble[$i] = $nibble[$j];
+                $nibble[$j] = $temp;
+            }
+            echo "\nafter nibble swapping : " . $nibble[$i] . " " . $temp . "\n";
+            return "$nibble[$i]$temp";
+        }
+    }
+
+    public static function binaryToDecimal($nibbleresult)
+    {
+        //bindec() to convert binary to decimal
+        $decimal = bindec($nibbleresult);
+        echo "Binary to decimal : $decimal";
+    }
+
+    public static function binarySearch($arrayelement, $find)
+    {
+        for ($i = 0; $i < count($arrayelement); $i++) {
+            if ($arrayelement[$i] == $find) {
+                return "$i";
+            }
+        }
+    }
+
+    public static function insertionSort($arrayelement)
+    {
+        for($i=1;$i<count($arrayelement);$i++)
+        {
+            $j=$i;
+               while($j>0 && ($arrayelement[$j-1]>$arrayelement[$j]))
+                {
+                    $key=$arrayelement[$j];
+                    $arrayelement[$j]=$arrayelement[$j-1];
+                    $arrayelement[$j-1]=$key;
+                    $j--;
+                }   
+        }
+        echo " elements after sorting  :\n ";
+        foreach($arrayelement as $element)
+        {
+            echo $element."\n";
+        }
+    }
+
+    public static function bubbleSort($arrayelement)
+    {
+        
+    }
 }

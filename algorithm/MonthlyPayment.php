@@ -1,5 +1,6 @@
 <?php
 include 'Utility.php';
+
 echo "Enter the Principal :";
 $principal = Utility::numericInput();
 echo "Enter the Rate :";
