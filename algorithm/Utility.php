@@ -23,7 +23,7 @@ class Utility
             fscanf(STDIN, "%s\n", $string);
             if (is_numeric($string)) {
                 throw new Exception("Enter string only");
-               
+
             } else {
                 return $string;
             }
@@ -32,7 +32,6 @@ class Utility
             echo "Exception :" . $e->getMessage() . "\n" . "on line" . $e->getLine() . "\n";
         }
     }
-    
 
     public static function floatInput()
     {
@@ -52,7 +51,7 @@ class Utility
     {
         try {
             fscanf(STDIN, "%s\n", $string);
-            if (is_string($string)) {  
+            if (is_string($string)) {
                 return $string;
             } else {
                 throw new Exception("Enter string only");
@@ -176,8 +175,7 @@ class Utility
         $vendingarray = array(1000, 500, 200, 100, 50, 20, 10, 5, 1);
         static $reminder = 0;
         if ($amount > 0) {
-            if ($amount >= $vendingarray[$index]) 
-            {
+            if ($amount >= $vendingarray[$index]) {
                 $reminder = $amount % $vendingarray[$index];
                 $count = floor($amount / $vendingarray[$index]);
 
@@ -329,37 +327,147 @@ class Utility
         echo "Binary to decimal : $decimal";
     }
 
-    public static function binarySearch($arrayelement, $find)
+    public static function binarySearch($arrayelement,$left,$right,$find)
     {
-        for ($i = 0; $i < count($arrayelement); $i++) {
-            if ($arrayelement[$i] == $find) {
-                return "$i";
-            }
+        if($left<=$right)
+        {
+            $mid=floor(($left+$right)/2);
+            if($arrayelement[$mid]==$find)
+            return $mid;
+
+            if($arrayelement[$mid]>$find)
+            return Utility::binarySearch($arrayelement,$left,$mid-1,$find);
+
+            if($arrayelement[$mid]<$find)
+            return Utility::binarySearch($arrayelement,$mid+1,$right,$find);
+
+        }else
+        {
+            return -1;
         }
     }
 
     public static function insertionSort($arrayelement)
     {
-        for($i=1;$i<count($arrayelement);$i++)
-        {
-            $j=$i;
-               while($j>0 && ($arrayelement[$j-1]>$arrayelement[$j]))
-                {
-                    $key=$arrayelement[$j];
-                    $arrayelement[$j]=$arrayelement[$j-1];
-                    $arrayelement[$j-1]=$key;
-                    $j--;
-                }   
+        for ($i = 1; $i < count($arrayelement); $i++) {
+            $j = $i;
+            while ($j > 0 && ($arrayelement[$j - 1] > $arrayelement[$j])) {
+                $key = $arrayelement[$j];
+                $arrayelement[$j] = $arrayelement[$j - 1];
+                $arrayelement[$j - 1] = $key;
+                $j--;
+            }
         }
-        echo " elements after sorting  :\n ";
-        foreach($arrayelement as $element)
-        {
-            echo $element."\n";
+        echo "Elements after sorting  :\n ";
+        foreach ($arrayelement as $element) {
+            echo $element . "\n";
         }
     }
 
     public static function bubbleSort($arrayelement)
     {
-        
+        $arraylength = count($arrayelement);
+        for ($i = 0; $i < $arraylength; $i++) {
+            for ($j = 0; $j < ($arraylength - $i - 1); $j++) {
+                if ($arrayelement[$j] > $arrayelement[$j + 1]) {
+                    $temp = $arrayelement[$j];
+                    $arrayelement[$j] = $arrayelement[$j + 1];
+                    $arrayelement[$j + 1] = $temp;
+                }
+            }
+        }
+        echo "After sorting array : \n";
+        foreach ($arrayelement as $bubblesort) {
+            echo " $bubblesort \n";
+        }
     }
+
+    public static function elapsedTime($starttime)
+    {
+        $endtime = microtime();
+        $elapsedtime = $endtime - $starttime;
+        echo "Total elapsed time :" . $elapsedtime;
+    }
+
+    public static function mergeSort($arrayelement, $front, $rear)
+    {
+        $mid;
+        if ($front < $rear) {
+            $mid = floor(($front + $rear) / 2);
+            Utility::mergeSort($arrayelement, $front, $mid);
+            Utility::mergeSort($arrayelement, ($mid + 1), $rear);
+            Utility::merge($arrayelement, $front, $mid, $rear);
+        }
+    }
+    public static function merge($arrayelement, $front, $mid, $rear)
+    {
+        $i = $front;
+        $j = $mid + 1;
+        $b = [];
+        $k = 0;
+        while (($i <= $mid) && ($j <= $rear)) {
+            if ($arrayelement[$i] < $arrayelement[$j]) {
+                $b[$k++] = $arrayelement[$i++];
+            } else {
+                $b[$k++] = $arrayelement[$j++];
+            }
+        }
+        while ($i <= $j) {
+            $b[$k++] = $arrayelement[$i++];
+        }
+
+        while ($j <= $rear) {
+            $b[$k++] = $arrayelement[$j++];
+        }
+
+        for($i=$rear;$i>=$front;$i--)
+        {
+            $arrayelement[$i]=$b[--$k];
+        }
+
+        echo "After merge : \n";
+        foreach($arrayelement as $mergeelement)
+        {
+            echo "$mergeelement \n";
+        }
+    }
+
+    public static function findNumber($number,$target)
+    {
+        $remainder=0;
+        $sum=0;
+        $n=0;
+        $count = 0;
+		while($number>0)
+		{
+			if($number==1)
+			{
+				break;
+			}
+			else
+			{
+			$number=floor($number/2);
+			$count++;
+			
+			}
+			
+		}
+		echo "\n Count of number :".$count;
+		$number=floor(pow(2, $count));
+		echo"\nNumber is : $number \n";
+		
+        $array=[count($number)];
+        $i;
+        $j = 0;
+		$flag=false;
+		for($i=0,$j=1;$i<$number;$i++,$j++)
+		{
+				$array[$i]=$j;
+			
+		}
+        $startp=0;
+        $endp=(count($array)-1);
+        return Utility::binarySearch($array,$startp,$endp,$target);
+	}
+    
 }
