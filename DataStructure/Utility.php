@@ -114,30 +114,5 @@ class Utility
 		}
 
     }
-
-   /*function checkValidExpression($string) {
-		int count = 0;
-		Stack1 stack = new Stack1();
-		for (int i = 0; i < string.length(); i++) {
-			if (string.charAt(i) == '(') {
-				stack.push(string.charAt(i));
-				count++;
-			}
-
-			if (string.charAt(i) == ')') {
-				if (stack.isEmpty()) {
-					count--;
-				} else {
-					stack.pop();
-					count--;
-				}
-			}
-		}
-		if (stack.isEmpty() && count == 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}*/
 }
 ?>
